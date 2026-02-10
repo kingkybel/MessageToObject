@@ -9,18 +9,20 @@ from a message string. At lookup time, the same key generator is applied to the 
 correct factory.
 
 Template parameters:
-- `N`: number of characters used to build the key (limited to `sizeof(unsigned long long)`).
-- `KeyGenerator`: a type that can be constructed from `std::string` and provides `hash()` returning an integral type.
-  The default is `util::prefix_key<N>`.
+- `N`: number of characters used to build the key (limited to `sizeof(size_t)`).
+- `KeyGenerator`: a type that can be constructed from `std::string` or `std::string_view` and provides `hash()` returning
+  an integral type. The default is `util::prefix_key<N>`.
 
-Key generators in `include/string_to_hash.h`:
+Key generators in `include/string_to_hash.h` (accept `std::string`, `std::string_view`, `char*`, and `char[]` without
+creating a `std::string`):
 - `prefix_key<N>`: uses the first `N` characters of the message.
 - `postfix_key<N>`: uses the last `N` characters of the message.
 - `enumerated_key<Idx...>`: uses characters at the specified zero-based indices, in that order.
 
 Adding your own key generator:
-- Provide a type constructible from `std::string` that exposes a `hash()` method returning an integral type.
-- Ensure the internal key fits in an `unsigned long long` if you want to reuse the same map storage and compare
+- Provide a type constructible from `std::string` or `std::string_view` that exposes a `hash()` method returning an
+  integral type.
+- Ensure the internal key fits in an `size_t` if you want to reuse the same map storage and compare
   behavior as the built-in generators.
 - Implement any extraction logic you need (prefix, suffix, pattern-based, etc.).
 
@@ -43,9 +45,9 @@ struct my_key
         std::memcpy(&hash_, buf, sizeof(buf));
     }
 
-    unsigned long long hash() const { return hash_; }
+    size_t hash() const { return hash_; }
 
-    unsigned long long hash_;
+    size_t hash_;
 };
 
 using CustomMap = util::generator_map<4, my_key>;

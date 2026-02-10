@@ -27,6 +27,7 @@
 
 #include <gtest/gtest.h>
 #include <string>
+#include <string_view>
 
 TEST(StringToHashTest, PrefixKeyUsesFirstN)
 {
@@ -80,5 +81,68 @@ TEST(StringToHashTest, EnumeratedKeyOutOfRangeZeroPads)
     expected_str[2] = '\0';
 
     util::prefix_key<3> expected(expected_str);
+    EXPECT_EQ(key.hash(), expected.hash());
+}
+
+TEST(StringToHashTest, AcceptsStringViewWithoutConversion)
+{
+    const std::string      input = "abcdef";
+    const std::string_view view  = input;
+    util::prefix_key<4>    key(view);
+    util::prefix_key<4>    expected("abcd");
+    EXPECT_EQ(key.hash(), expected.hash());
+}
+
+TEST(StringToHashTest, AcceptsCharPointer)
+{
+    const char *input = "abcdef";
+    util::postfix_key<3> key(input);
+    util::prefix_key<3> expected("def");
+    EXPECT_EQ(key.hash(), expected.hash());
+}
+
+TEST(StringToHashTest, AcceptsCharArray)
+{
+    const char input[] = "abcdef";
+    util::enumerated_key<1, 3, 5> key(input);
+    util::prefix_key<3> expected("bdf");
+    EXPECT_EQ(key.hash(), expected.hash());
+}
+
+TEST(StringToHashTest, ValidKeyGeneratorSupportsStringView)
+{
+    static_assert(util::is_valid_key_generator<util::prefix_key<4>>::value,
+                  "prefix_key should be a valid key generator");
+    static_assert(std::is_constructible_v<util::prefix_key<4>, std::string_view>,
+                  "prefix_key should be constructible from string_view");
+}
+
+TEST(StringToHashTest, DelimitedNumberKeyParsesUntilEndSymbol)
+{
+    const char input[] = "9=1234|35=D|";
+    util::delimited_number_key<'|', '\x01'> key(input, 2);
+    EXPECT_EQ(key.hash(), static_cast<size_t>(1234));
+}
+
+TEST(StringToHashTest, DelimitedNumberKeyStopsOnNonDigit)
+{
+    const std::string input = "len=12A5|";
+    util::delimited_number_key<'|'> key(input, 4);
+    EXPECT_EQ(key.hash(), static_cast<size_t>(12));
+}
+
+TEST(StringToHashTest, RangeKeyCopiesSubstring)
+{
+    const std::string input = "abcdef";
+    util::range_key<3> key(input, 1, 4);
+    util::prefix_key<3> expected("bcd");
+    EXPECT_EQ(key.hash(), expected.hash());
+}
+
+TEST(StringToHashTest, RangeKeyHandlesShortRange)
+{
+    const char input[] = "ab";
+    util::range_key<4> key(input, 0, 2);
+    util::prefix_key<4> expected("ab");
     EXPECT_EQ(key.hash(), expected.hash());
 }

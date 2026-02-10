@@ -59,9 +59,9 @@ class generator_map
      * Retrieve the one instance (per `KeyGenerator` type) of the map.
      * @return  singleton map
      */
-    static std::unordered_map<unsigned long long, GeneratorFunc> &generatorMap_()
+    static std::unordered_map<size_t, GeneratorFunc> &generatorMap_()
     {
-        static std::unordered_map<unsigned long long, GeneratorFunc> generatorMap;
+        static std::unordered_map<size_t, GeneratorFunc> generatorMap;
         return generatorMap;
     }
 
