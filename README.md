@@ -1,3 +1,5 @@
+![MessageToObjects Banner](assets/banners/message_to_objects_banner.svg)
+
 # MessageToObjects
 
 A library to enable generation of polymorph objects from message-strings.
@@ -111,3 +113,8 @@ Include the file in your code e.g:
 ```c++
 #include <dkyb/generator_map.h>
 ```
+
+## Powered by
+Reduce the smells, keep on top of code-quality. Sonar Qube is run on every push to the `main` branch on GitHub.
+
+[![SonarQubeCloud](assets/icons/logo-sonarqube-cloud-small.png)](https://sonarcloud.io/project/overview?id=kingkybel)

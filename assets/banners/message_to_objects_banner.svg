@@ -1,0 +1,36 @@
+<svg width="1600" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MessageToObjects banner">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2a0a1e"/>
+      <stop offset="100%" stop-color="#7a1f58"/>
+    </linearGradient>
+    <linearGradient id="chip" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffd5ee"/>
+      <stop offset="100%" stop-color="#ff8ac8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="400" fill="url(#bg)"/>
+  <circle cx="170" cy="390" r="260" fill="#ffb3da" fill-opacity="0.10"/>
+  <circle cx="1460" cy="20" r="190" fill="#ffd9ef" fill-opacity="0.08"/>
+
+  <g transform="translate(95, 180)">
+    <text font-family="Segoe UI, Arial, sans-serif" font-size="86" font-weight="700" fill="#ffe6f4">MessageToObjects</text>
+    <text y="58" font-family="Segoe UI, Arial, sans-serif" font-size="31" fill="#ffc5e4">Fast string-keyed object factory map for C++</text>
+  </g>
+
+  <g transform="translate(1270, 200)">
+    <circle r="154" fill="#43122f" stroke="#ffb6dc" stroke-width="5"/>
+    <circle r="122" fill="none" stroke="#ff74be" stroke-width="10"/>
+
+    <rect x="-92" y="-84" width="184" height="168" rx="16" fill="#fff1fa"/>
+    <rect x="-72" y="-62" width="144" height="122" rx="8" fill="url(#chip)"/>
+
+    <text x="0" y="-18" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="18" fill="#7d0f52">"TYPE:Order"</text>
+    <text x="0" y="8" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="17" fill="#7d0f52">key: prefix&lt;4&gt;</text>
+    <text x="0" y="34" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="17" fill="#7d0f52">hash: 0x524f4454</text>
+
+    <path d="M-122,78 C-76,40 -24,34 28,64" fill="none" stroke="#ffc1e2" stroke-width="5" stroke-linecap="round"/>
+    <path d="M26,64 L12,68 L22,54" fill="none" stroke="#ffc1e2" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

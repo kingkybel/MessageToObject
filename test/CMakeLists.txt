@@ -9,4 +9,3 @@ target_link_libraries(run_tests
     gtest_main
 )
 add_test(NAME run_tests COMMAND run_tests)
-include(Dart)
