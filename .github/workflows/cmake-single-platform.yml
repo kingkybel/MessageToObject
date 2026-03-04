@@ -25,34 +25,6 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Force HTTPS for GitHub submodules
-      run: |
-        git config --global url."https://github.com/".insteadOf git@github.com:
-        git config --global url."https://github.com/".insteadOf ssh://git@github.com/
-
-    - name: Ensure dependency repositories are present
-      run: |
-        ensure_repo() {
-          local repo_path="$1"
-          local repo_url="$2"
-          local repo_name="$3"
-
-          if [[ -f "${repo_path}/CMakeLists.txt" ]]; then
-            echo "${repo_name} already present at ${repo_path}"
-            git -C "${repo_path}" submodule update --init --recursive
-            return
-          fi
-
-          if [[ -d "${repo_path}" ]]; then
-            rm -rf "${repo_path}"
-          fi
-
-          git clone --depth 1 --recurse-submodules "${repo_url}" "${repo_path}"
-        }
-
-        ensure_repo "${{github.workspace}}/DebugTrace" "https://github.com/kingkybel/DebugTrace.git" "DebugTrace"
-        ensure_repo "${{github.workspace}}/TypeTraits" "https://github.com/kingkybel/TypeTraits.git" "TypeTraits"
-
     - name: Cache gtest
       uses: actions/cache@v4
       id: cache-gtest
@@ -81,22 +53,6 @@ jobs:
           sudo cp lib/*.a /usr/lib
           sudo cp -R ~/gtest/* /usr
         fi
-
-    - name: Install DebugTrace
-      run: |
-        mkdir -p ${{github.workspace}}/DebugTrace/build
-        cd ${{github.workspace}}/DebugTrace/build
-        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/usr -S ..
-        cmake --build . --parallel $(nproc)
-        sudo cmake --install .
-
-    - name: Install TypeTraits
-      run: |
-        mkdir -p ${{github.workspace}}/TypeTraits/build
-        cd ${{github.workspace}}/TypeTraits/build
-        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/usr -S ..
-        cmake --build . --parallel $(nproc)
-        sudo cmake --install .
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -125,34 +81,6 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Force HTTPS for GitHub submodules
-      run: |
-        git config --global url."https://github.com/".insteadOf git@github.com:
-        git config --global url."https://github.com/".insteadOf ssh://git@github.com/
-
-    - name: Ensure dependency repositories are present
-      run: |
-        ensure_repo() {
-          local repo_path="$1"
-          local repo_url="$2"
-          local repo_name="$3"
-
-          if [[ -f "${repo_path}/CMakeLists.txt" ]]; then
-            echo "${repo_name} already present at ${repo_path}"
-            git -C "${repo_path}" submodule update --init --recursive
-            return
-          fi
-
-          if [[ -d "${repo_path}" ]]; then
-            rm -rf "${repo_path}"
-          fi
-
-          git clone --depth 1 --recurse-submodules "${repo_url}" "${repo_path}"
-        }
-
-        ensure_repo "${{github.workspace}}/DebugTrace" "https://github.com/kingkybel/DebugTrace.git" "DebugTrace"
-        ensure_repo "${{github.workspace}}/TypeTraits" "https://github.com/kingkybel/TypeTraits.git" "TypeTraits"
-
     - name: Cache gtest
       uses: actions/cache@v4
       id: cache-gtest
@@ -182,21 +110,6 @@ jobs:
           sudo cp -R ~/gtest/* /usr
         fi
 
-    - name: Install DebugTrace
-      run: |
-        mkdir -p ${{github.workspace}}/DebugTrace/build
-        cd ${{github.workspace}}/DebugTrace/build
-        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/usr -S ..
-        cmake --build . --parallel $(nproc)
-        sudo cmake --install .
-
-    - name: Install TypeTraits
-      run: |
-        mkdir -p ${{github.workspace}}/TypeTraits/build
-        cd ${{github.workspace}}/TypeTraits/build
-        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/usr -S ..
-        cmake --build . --parallel $(nproc)
-        sudo cmake --install .
     - name: Install lcov
       run: |
         sudo apt-get update
@@ -284,34 +197,6 @@ jobs:
           fetch-depth: 0
           submodules: 'recursive'
 
-      - name: Force HTTPS for GitHub submodules
-        run: |
-          git config --global url."https://github.com/".insteadOf git@github.com:
-          git config --global url."https://github.com/".insteadOf ssh://git@github.com/
-
-      - name: Ensure dependency repositories are present
-        run: |
-          ensure_repo() {
-            local repo_path="$1"
-            local repo_url="$2"
-            local repo_name="$3"
-
-            if [[ -f "${repo_path}/CMakeLists.txt" ]]; then
-              echo "${repo_name} already present at ${repo_path}"
-              git -C "${repo_path}" submodule update --init --recursive
-              return
-            fi
-
-            if [[ -d "${repo_path}" ]]; then
-              rm -rf "${repo_path}"
-            fi
-
-            git clone --depth 1 --recurse-submodules "${repo_url}" "${repo_path}"
-          }
-
-          ensure_repo "${{github.workspace}}/DebugTrace" "https://github.com/kingkybel/DebugTrace.git" "DebugTrace"
-          ensure_repo "${{github.workspace}}/TypeTraits" "https://github.com/kingkybel/TypeTraits.git" "TypeTraits"
-
       - name: Install build tools
         run: |
           sudo apt-get update
@@ -346,22 +231,6 @@ jobs:
             sudo cp -R ~/gtest/* /usr
           fi
 
-      - name: Install DebugTrace
-        run: |
-          mkdir -p ${{github.workspace}}/DebugTrace/build
-          cd ${{github.workspace}}/DebugTrace/build
-          cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/usr -S ..
-          cmake --build . --parallel $(nproc)
-          sudo cmake --install .
-
-      - name: Install TypeTraits
-        run: |
-          mkdir -p ${{github.workspace}}/TypeTraits/build
-          cd ${{github.workspace}}/TypeTraits/build
-          cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/usr -S ..
-          cmake --build . --parallel $(nproc)
-          sudo cmake --install .
-
       - name: Install Sonar build-wrapper
         run: |
           curl -sSLo build-wrapper.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
@@ -384,6 +253,6 @@ jobs:
           args: >
             -Dsonar.organization=${{ vars.SONAR_ORG }}
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
             -Dsonar.sources=include,test
             -Dsonar.cfamily.build-wrapper-output=bw-output
