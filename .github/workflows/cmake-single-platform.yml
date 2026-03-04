@@ -25,6 +25,28 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Ensure dependency repositories are present
+      run: |
+        ensure_repo() {
+          local repo_path="$1"
+          local repo_url="$2"
+          local repo_name="$3"
+
+          if [[ -f "${repo_path}/CMakeLists.txt" ]]; then
+            echo "${repo_name} already present at ${repo_path}"
+            return
+          fi
+
+          if [[ -d "${repo_path}" ]]; then
+            rm -rf "${repo_path}"
+          fi
+
+          git clone --depth 1 "${repo_url}" "${repo_path}"
+        }
+
+        ensure_repo "${{github.workspace}}/DebugTrace" "https://github.com/kingkybel/DebugTrace.git" "DebugTrace"
+        ensure_repo "${{github.workspace}}/TypeTraits" "https://github.com/kingkybel/TypeTraits.git" "TypeTraits"
+
     - name: Cache gtest
       uses: actions/cache@v4
       id: cache-gtest
@@ -96,6 +118,28 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
+
+    - name: Ensure dependency repositories are present
+      run: |
+        ensure_repo() {
+          local repo_path="$1"
+          local repo_url="$2"
+          local repo_name="$3"
+
+          if [[ -f "${repo_path}/CMakeLists.txt" ]]; then
+            echo "${repo_name} already present at ${repo_path}"
+            return
+          fi
+
+          if [[ -d "${repo_path}" ]]; then
+            rm -rf "${repo_path}"
+          fi
+
+          git clone --depth 1 "${repo_url}" "${repo_path}"
+        }
+
+        ensure_repo "${{github.workspace}}/DebugTrace" "https://github.com/kingkybel/DebugTrace.git" "DebugTrace"
+        ensure_repo "${{github.workspace}}/TypeTraits" "https://github.com/kingkybel/TypeTraits.git" "TypeTraits"
 
     - name: Cache gtest
       uses: actions/cache@v4
@@ -227,6 +271,28 @@ jobs:
         with:
           fetch-depth: 0
           submodules: 'recursive'
+
+      - name: Ensure dependency repositories are present
+        run: |
+          ensure_repo() {
+            local repo_path="$1"
+            local repo_url="$2"
+            local repo_name="$3"
+
+            if [[ -f "${repo_path}/CMakeLists.txt" ]]; then
+              echo "${repo_name} already present at ${repo_path}"
+              return
+            fi
+
+            if [[ -d "${repo_path}" ]]; then
+              rm -rf "${repo_path}"
+            fi
+
+            git clone --depth 1 "${repo_url}" "${repo_path}"
+          }
+
+          ensure_repo "${{github.workspace}}/DebugTrace" "https://github.com/kingkybel/DebugTrace.git" "DebugTrace"
+          ensure_repo "${{github.workspace}}/TypeTraits" "https://github.com/kingkybel/TypeTraits.git" "TypeTraits"
 
       - name: Install build tools
         run: |
