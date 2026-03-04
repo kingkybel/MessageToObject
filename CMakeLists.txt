@@ -5,6 +5,7 @@ project(MessageToObjects
         HOMEPAGE_URL "https://github.com/kingkybel/MessageToObjects")
 
 include(GNUInstallDirs)
+include(CTest)
 
 if (CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE RelWithDebInfo)
