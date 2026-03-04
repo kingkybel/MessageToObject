@@ -34,6 +34,7 @@ jobs:
 
           if [[ -f "${repo_path}/CMakeLists.txt" ]]; then
             echo "${repo_name} already present at ${repo_path}"
+            git -C "${repo_path}" submodule update --init --recursive
             return
           fi
 
@@ -41,7 +42,7 @@ jobs:
             rm -rf "${repo_path}"
           fi
 
-          git clone --depth 1 "${repo_url}" "${repo_path}"
+          git clone --depth 1 --recurse-submodules "${repo_url}" "${repo_path}"
         }
 
         ensure_repo "${{github.workspace}}/DebugTrace" "https://github.com/kingkybel/DebugTrace.git" "DebugTrace"
@@ -128,6 +129,7 @@ jobs:
 
           if [[ -f "${repo_path}/CMakeLists.txt" ]]; then
             echo "${repo_name} already present at ${repo_path}"
+            git -C "${repo_path}" submodule update --init --recursive
             return
           fi
 
@@ -135,7 +137,7 @@ jobs:
             rm -rf "${repo_path}"
           fi
 
-          git clone --depth 1 "${repo_url}" "${repo_path}"
+          git clone --depth 1 --recurse-submodules "${repo_url}" "${repo_path}"
         }
 
         ensure_repo "${{github.workspace}}/DebugTrace" "https://github.com/kingkybel/DebugTrace.git" "DebugTrace"
@@ -281,6 +283,7 @@ jobs:
 
             if [[ -f "${repo_path}/CMakeLists.txt" ]]; then
               echo "${repo_name} already present at ${repo_path}"
+              git -C "${repo_path}" submodule update --init --recursive
               return
             fi
 
@@ -288,7 +291,7 @@ jobs:
               rm -rf "${repo_path}"
             fi
 
-            git clone --depth 1 "${repo_url}" "${repo_path}"
+            git clone --depth 1 --recurse-submodules "${repo_url}" "${repo_path}"
           }
 
           ensure_repo "${{github.workspace}}/DebugTrace" "https://github.com/kingkybel/DebugTrace.git" "DebugTrace"
